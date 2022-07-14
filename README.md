@@ -1,1 +1,1 @@
-bootcamp
+Learning progress on Metana bootcamp.
