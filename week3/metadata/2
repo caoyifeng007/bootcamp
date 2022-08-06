@@ -1,0 +1,9 @@
+{
+    "description": "ElvinsJ IPFS tests", 
+    "image": "ipfs://QmP3ndfWESudBTmg17ZPLfn441syZyQKpm4ZtPsxE8yfJc/2.jpg", 
+    "attributes": [
+        {
+            "trait_type":"wzry","value":"玄策"
+        }
+    ] 
+}
