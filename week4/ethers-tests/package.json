@@ -1,0 +1,14 @@
+{
+  "name": "ethers-tests",
+  "version": "1.0.0",
+  "description": "Learning Ethers.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ElvinsJ",
+  "license": "ISC",
+  "devDependencies": {
+    "ethers": "^5.6.9"
+  }
+}
