@@ -5,6 +5,14 @@ import { task } from "hardhat/config";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.9",
+  networks: {
+    hardhat: {
+      forking: {
+        url: "https://eth-mainnet.alchemyapi.io/v2/<key>",
+        blockNumber: 14390000,
+      },
+    },
+  },
 };
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
