@@ -22,7 +22,7 @@ describe("BigNumbers", function () {
 
     // Bad
     describe("setToTheMax Bad", async function () {
-        it("should set the number to the maximum", async function () {
+        it.skip("should set the number to the maximum", async function () {
             const tx = await contract.setToTheMax();
             await tx.wait();
 
