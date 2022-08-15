@@ -5,11 +5,35 @@
 </template>
 
 <script setup lang="ts">
+import { ethers, Contract } from "ethers";
+
 const check = () => {
   if (typeof window.ethereum !== "undefined") {
     console.log("MetaMask is installed!");
   }
 };
+
+const ERC20_ABI = [
+  "function name() public view returns (string)",
+  "function symbol() public view returns (string)",
+  "function decimals() public view returns (uint8)",
+  "function totalSupply() public view returns (uint256)",
+  "function balanceOf(address _owner) public view returns (uint256 balance)",
+  "function transfer(address _to, uint256 _value) public returns (bool success)",
+  "function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)",
+  "function approve(address _spender, uint256 _value) public returns (bool success)",
+  "function allowance(address _owner, address _spender) public view returns (uint256 remaining)",
+];
+
+type F = {
+  name(): string;
+  totalSupply(): number;
+} & Contract;
+
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+const contract = new ethers.Contract("sfsfsdf", ERC20_ABI, provider);
+
+await contract.name();
 
 const connect = async () => {
   const result = await window.ethereum.request!({
