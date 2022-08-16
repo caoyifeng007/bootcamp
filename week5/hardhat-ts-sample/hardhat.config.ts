@@ -8,19 +8,25 @@ import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-d
 
 const config: HardhatUserConfig = {
     solidity: "0.8.9",
-    //   defaultNetwork: "rinkeby",
+    defaultNetwork: "rinkeby",
     networks: {
         hardhat: {
             forking: {
-                url: `${process.env.alchemyKey}`,
-                // url: `${process.env.infuraKey}`,
+                url: `${process.env.ALCHEMY_KEY}`,
+                // url: `${process.env.INFURA_KEY}`,
                 blockNumber: 15352600,
             },
         },
-        // rinkeby: {
-        //     url:`${process.env.infuraKey}`,
-        //     accounts: ["de982a3f252280315f34f5233b2be61b89e7e6e6801c4b04a4bfa0c1c7d31fda","0afa5ec8e9f6b17506328e789216c3332a91ecd6b682dbf66fc5cf728e918b31"]
-        //   }
+        rinkeby: {
+            url: `${process.env.INFURA_KEY}`,
+            accounts: [
+                `${process.env.ACCOUNT_4_PK}`,
+                `${process.env.ACCOUNT_3_PK}`,
+            ],
+        },
+    },
+    etherscan: {
+        apiKey: `${process.env.ETHERSCAN_API_KEY}`,
     },
 };
 
@@ -31,6 +37,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
         console.log(account.address);
     }
 });
+
+// https://hardhat.org/hardhat-runner/plugins/nomiclabs-hardhat-ethers#usage
 task(
     "blockNumber",
     "Prints the current block number",
