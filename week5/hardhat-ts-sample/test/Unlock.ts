@@ -16,12 +16,13 @@ describe("Unlock", function () {
     beforeEach(async function () {
         provider = await ethers.provider;
 
-        await network.provider.request({
-            method: "hardhat_impersonateAccount",
-            params: [EXG_ADDR],
-        });
+        // await network.provider.request({
+        //     method: "hardhat_impersonateAccount",
+        //     params: [EXG_ADDR],
+        // });
+        exg_account = await ethers.getImpersonatedSigner(EXG_ADDR);
 
-        exg_account = await ethers.getSigner(EXG_ADDR);
+        // exg_account = await ethers.getSigner(EXG_ADDR);
         DAI_Contract = await ethers.getContractAt("IERC20", DAI_ADDR);
 
         accounts = await ethers.getSigners();
