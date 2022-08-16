@@ -17,6 +17,8 @@ const ERC20_ABI = [
     "function allowance(address _owner, address _spender) public view returns (uint256 remaining)",
 ]
 const readContract = async ()=>{
+    // Creating a new instance of a Contract connects to an existing contract
+    // by specifying its address on the blockchain
     const contract = new ethers.Contract(DaiTokenAddr, ERC20_ABI, provider)
     const TokenName = await contract.name();
     console.log(TokenName);
