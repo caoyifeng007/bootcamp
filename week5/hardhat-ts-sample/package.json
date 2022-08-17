@@ -12,7 +12,8 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomiclabs/hardhat-solhint": "^2.0.1",
-    "hardhat": "^2.10.1"
+    "hardhat": "^2.10.1",
+    "undici": "^5.8.2"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
