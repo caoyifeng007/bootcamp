@@ -1,20 +1,4 @@
-Alchemy官方教程 -> Subscription API Quickstart
-
-https://docs.alchemy.com/reference/subscription-api
-
-
-
-Alchemy官方教程 -> How to Listen to NFT Mints
-
-https://docs.alchemy.com/docs/how-to-listen-to-nft-mints
-
-
-
-Logs, because logs is where we're going to be able to find the mint event logs, the transfer logs that are, uh you know, signal that there's an entertainment 
-
-Alchemy SDK -> https://github.com/alchemyplatform/alchemy-sdk-js
-
-```js
+// npm install @alchemy-sdk
 import { Network, Alchemy } from "alchemy-sdk";
 
 const settings = {
@@ -32,37 +16,18 @@ const zeroTopic =
 // This is the NFT contract we want to watch.
 const nftContractAddress = "0xbd34d145fcfd3992a0def1057891d51339a90128";
 
+// Create the log options object.
 const hackrDaoMintEvents = {
   address: nftContractAddress,
   topics: [mintTopic, zeroTopic],
 };
 
+// TODO: Add whatever logic you want to run upon mint events.
 const doSomethingWithTxn = (txn) => console.log(txn);
 
 console.log(`Listening on contract: ${nftContractAddress}`)
 
+// Open the websocket and listen for events!
 alchemy.ws.on(hackrDaoMintEvents, doSomethingWithTxn);
-```
 
-
-
-![](hashoffunctionsignature.png)
-
-**Topics 后边是 hash of function signature** <u>0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef</u>
-
-另外一个可以免费领测试网ETH的网站 -> https://rinkebyfaucet.com/
-
-
-
-然后手动 mint，然后确认交易
-
-![](mintmanually.png)
-
-监听到了这次mint事件
-
-![](listensuccess.png)
-
-在Etherscan上再次确认
-
-![](transactiondetail.png)
 
