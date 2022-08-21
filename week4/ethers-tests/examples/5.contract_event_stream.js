@@ -1,6 +1,6 @@
 const { ethers } = require('ethers')
 
-const JsonRpcProvider = 'https://mainnet.infura.io/v3/0c43527032d94ad4a6332aee7a2bef82'
+const JsonRpcProvider = 'https://eth-mainnet.g.alchemy.com/v2/OZWyi8vjgLpp4qAl8BC3EEwBLeway5oP'
 const provider = new ethers.providers.JsonRpcProvider(JsonRpcProvider)
 
 const DaiContractAddr = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
