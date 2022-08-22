@@ -7,6 +7,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    // https://element-plus.gitee.io/en-US/guide/quickstart.html#full-import
+    // for code hint
+    "types": ["element-plus/global"]
   }
 }

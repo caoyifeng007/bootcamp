@@ -1,14 +1,21 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-import './assets/main.css'
+// import "./assets/main.css";
+import "./index.css";
+// TailWind 和 Element Plus 有冲突, 所以将 Element Plus 的样式放到后边
+import "element-plus/dist/index.css";
 
-const app = createApp(App)
+import ECharts from "vue-echarts";
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+// register globally (or you can do it locally)
+app.component("v-chart", ECharts);
+app.use(createPinia());
+app.use(router);
+
+app.mount("#app");
