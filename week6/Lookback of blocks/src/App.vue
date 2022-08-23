@@ -15,54 +15,20 @@
     </div>
   </div>
 
-  <el-button @click="getBlockNum">Get Block Number</el-button>
+  <!-- <el-button @click="getBlockNum">Get Block Number</el-button> -->
 
-  <div class="w-4/5 h-screen flex items-center">
-    <v-chart :option="option" />
-  </div>
+  <log-monitor />
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { use } from "echarts/core";
+import { storeToRefs } from "pinia";
+import { useMonitorStore } from "@/stores/monitor";
 
-// import ECharts modules manually to reduce bundle size
-import { CanvasRenderer } from "echarts/renderers";
-import { LineChart } from "echarts/charts";
-import { GridComponent } from "echarts/components";
+import LogMonitor from "@/components/LogMonitor.vue";
 
-import alchemy from "@/utils/alchemy";
+const monitorStore = useMonitorStore();
+const { contractAddr } = storeToRefs(monitorStore);
 
-use([CanvasRenderer, LineChart, GridComponent]);
-
-const contractAddr = ref("");
 const inputAddr = ref("");
-
-const blockNums = ref<number[]>([]);
-const totalVolumes = ref<number[]>([]);
-
-const option = ref({
-  xAxis: {
-    type: "category",
-    data: blockNums,
-  },
-  yAxis: {
-    type: "value",
-  },
-  series: [
-    {
-      data: totalVolumes,
-      type: "line",
-    },
-  ],
-});
-
-const getBlockNum = async () => {
-  const latestBlock = await alchemy.core.getBlockNumber();
-  console.log("The latest block number is", latestBlock);
-
-  for (let i = 9; i >= 0; i--) {
-    blockNums.value.push(latestBlock - i);
-  }
-};
 </script>
