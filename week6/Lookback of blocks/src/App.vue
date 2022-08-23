@@ -1,7 +1,25 @@
 <template>
-  <el-button color="#626aef">Primary</el-button>
+  <div class="flex flex-col items-center p-10">
+    <div class="flex w-1/3 justify-center space-x-8">
+      <div class="flex flex-col w-full">
+        <el-input class="h-10 w-full" v-model="inputAddr" clearable />
 
-  <v-chart class="h-screen" :option="option" />
+        <span class="h-10 w-full flex items-center">
+          {{ contractAddr }}
+        </span>
+      </div>
+
+      <el-button class="h-20" @click="contractAddr = inputAddr" color="#626aef">
+        Subscribe</el-button
+      >
+    </div>
+  </div>
+
+  <el-button @click="getBlockNum">Get Block Number</el-button>
+
+  <div class="w-4/5 h-screen flex items-center">
+    <v-chart :option="option" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,56 +28,41 @@ import { use } from "echarts/core";
 
 // import ECharts modules manually to reduce bundle size
 import { CanvasRenderer } from "echarts/renderers";
-import { PieChart } from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-} from "echarts/components";
+import { LineChart } from "echarts/charts";
+import { GridComponent } from "echarts/components";
 
-use([
-  CanvasRenderer,
-  PieChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-]);
+import alchemy from "@/utils/alchemy";
+
+use([CanvasRenderer, LineChart, GridComponent]);
+
+const contractAddr = ref("");
+const inputAddr = ref("");
+
+const blockNums = ref<number[]>([]);
+const totalVolumes = ref<number[]>([]);
 
 const option = ref({
-  title: {
-    text: "Traffic Sources",
-    left: "center",
+  xAxis: {
+    type: "category",
+    data: blockNums,
   },
-  tooltip: {
-    trigger: "item",
-    formatter: "{a} <br/>{b} : {c} ({d}%)",
-  },
-  legend: {
-    orient: "vertical",
-    left: "left",
-    data: ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
+  yAxis: {
+    type: "value",
   },
   series: [
     {
-      name: "Traffic Sources",
-      type: "pie",
-      radius: "55%",
-      center: ["50%", "60%"],
-      data: [
-        { value: 335, name: "Direct" },
-        { value: 310, name: "Email" },
-        { value: 234, name: "Ad Networks" },
-        { value: 135, name: "Video Ads" },
-        { value: 1548, name: "Search Engines" },
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-        },
-      },
+      data: totalVolumes,
+      type: "line",
     },
   ],
 });
+
+const getBlockNum = async () => {
+  const latestBlock = await alchemy.core.getBlockNumber();
+  console.log("The latest block number is", latestBlock);
+
+  for (let i = 9; i >= 0; i--) {
+    blockNums.value.push(latestBlock - i);
+  }
+};
 </script>
