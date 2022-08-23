@@ -8,6 +8,12 @@ const settings = {
 
 const alchemy = new Alchemy(settings);
 
+// https://docs.ethers.io/v5/single-page/#/v5/api/utils/hashing/-%23-utils-id
+// 这里可以使用  ethers.utils.id()
+//  ethers.utils.id("Transfer(address,address,uint256)")
+// 的输出就是 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+// 既 mintTopic 
+
 // This is the "transfer event" topic we want to watch.
 const mintTopic = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 // This is the "from address" we want to watch.
