@@ -46,7 +46,11 @@ const getBlockNum = async () => {
       topics: [ethers.utils.id("Transfer(address,address,uint256)")],
     });
 
-    totalVolumes.value.push(res.length);
+    let sum = 0;
+    res.forEach((item) => {
+      sum += parseInt(item.data, 16);
+    });
+    totalVolumes.value.push(sum);
   }
 };
 getBlockNum();
@@ -67,7 +71,11 @@ alchemy.ws.on("block", async (latestBlockNumber) => {
   });
 
   totalVolumes.value.shift();
-  totalVolumes.value.push(res.length);
+  let sum = 0;
+  res.forEach((item) => {
+    sum += parseInt(item.data, 16);
+  });
+  totalVolumes.value.push(sum);
 });
 
 const option = ref({
@@ -81,6 +89,7 @@ const option = ref({
     type: "value",
     minInterval: 1,
   },
+  animation: false,
   series: [
     {
       data: totalVolumes,
