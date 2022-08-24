@@ -18,6 +18,7 @@
   <!-- <el-button @click="getBlockNum">Get Block Number</el-button> -->
 
   <log-monitor />
+  <base-fee-monitor />
 </template>
 
 <script setup lang="ts">
@@ -26,6 +27,7 @@ import { storeToRefs } from "pinia";
 import { useMonitorStore } from "@/stores/monitor";
 
 import LogMonitor from "@/components/LogMonitor.vue";
+import BaseFeeMonitorVue from "@/components/BaseFeeMonitor.vue";
 
 const monitorStore = useMonitorStore();
 const { contractAddr } = storeToRefs(monitorStore);
