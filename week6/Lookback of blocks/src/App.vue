@@ -10,19 +10,14 @@
           @change="check"
           clearable
         />
-        <span>{{ errDisplay }}</span>
+        <span class="text-red-600">{{ errDisplay }}</span>
 
         <span class="h-10 w-full flex items-center">
           {{ contractAddr }}
         </span>
       </div>
 
-      <el-button
-        class="h-20"
-        @click="renewSubscription"
-        :disabled="subscribeDisable"
-        color="#626aef"
-      >
+      <el-button class="h-20" @click="renewSubscription" color="#626aef">
         Subscribe</el-button
       >
     </div>
@@ -55,7 +50,6 @@ const { contractAddr } = storeToRefs(monitorStore);
 const inputAddr = ref("");
 const errDisplay = ref("");
 const isValid = ref(false);
-const subscribeDisable = ref(false);
 
 monitorStore.init();
 
@@ -63,7 +57,14 @@ interface Subscribe {
   address: string;
 }
 const schema = object({
-  address: string().required().min(3),
+  address: string()
+    .required("Please input contract address")
+    .min(42, "Please input contract address")
+    .max(42)
+    .matches(/(0x\w{40})/, {
+      message: "Not a valid ERC20 token contract",
+      excludeEmptyString: true,
+    }),
 });
 // Create a form context with the validation schema
 const { setValues, validate } = useForm<Subscribe>({
@@ -85,7 +86,8 @@ function renewSubscription() {
   if (!isValid.value) {
     return;
   }
-  //   contractAddr.value = inputAddr.value;
+  contractAddr.value = inputAddr.value;
+  monitorStore.init();
   console.log("renew");
 }
 </script>
