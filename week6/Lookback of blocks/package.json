@@ -16,9 +16,11 @@
     "element-plus": "^2.2.14",
     "ethers": "^5.7.0",
     "pinia": "^2.0.17",
+    "vee-validate": "^4.6.6",
     "vue": "^3.2.37",
     "vue-echarts": "^6.2.3",
-    "vue-router": "^4.1.3"
+    "vue-router": "^4.1.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
