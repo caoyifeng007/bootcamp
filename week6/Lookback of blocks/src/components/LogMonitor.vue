@@ -17,13 +17,13 @@ import { GridComponent } from "echarts/components";
 use([CanvasRenderer, LineChart, GridComponent]);
 
 const monitorStore = useMonitorStore();
-const { blockNums, totalVolumes } = storeToRefs(monitorStore);
+const { blockNumArr, totalVolumeArr } = storeToRefs(monitorStore);
 
 const option = ref({
   xAxis: {
     name: "Block Number",
     type: "category",
-    data: blockNums,
+    data: blockNumArr,
   },
   yAxis: {
     name: "Total Transactions Volumes",
@@ -33,8 +33,13 @@ const option = ref({
   animation: false,
   series: [
     {
-      data: totalVolumes,
+      data: totalVolumeArr,
       type: "line",
+      symbolSize: 8,
+      label: {
+        show: true,
+        position: "top",
+      },
     },
   ],
 });

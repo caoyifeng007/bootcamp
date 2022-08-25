@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseFeeMonitor: typeof import('./src/components/BaseFeeMonitor.vue')['default']
+    copy: typeof import('./src/components/BaseFeeMonitor copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElInput: typeof import('element-plus/es')['ElInput']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -16,6 +17,7 @@ declare module '@vue/runtime-core' {
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     LogMonitor: typeof import('./src/components/LogMonitor.vue')['default']
+    RationMonitor: typeof import('./src/components/RationMonitor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

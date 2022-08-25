@@ -15,11 +15,11 @@
     </div>
   </div>
 
-  <!-- <el-button @click="getBlockNum">Get Block Number</el-button> -->
-
   <log-monitor />
 
   <base-fee-monitor />
+
+  <ration-monitor />
 </template>
 
 <script setup lang="ts">
@@ -29,6 +29,7 @@ import { useMonitorStore } from "@/stores/monitor";
 
 import LogMonitor from "@/components/LogMonitor.vue";
 import BaseFeeMonitor from "@/components/BaseFeeMonitor.vue";
+import RationMonitor from "@/components/RationMonitor.vue";
 
 const monitorStore = useMonitorStore();
 const { contractAddr } = storeToRefs(monitorStore);

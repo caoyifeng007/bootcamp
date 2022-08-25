@@ -1,30 +1,30 @@
 import { ref, type Ref } from "vue";
 import { defineStore } from "pinia";
 
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import alchemy from "@/utils/alchemy";
 
 export const useMonitorStore = defineStore("monitor", () => {
   // Default ERC20 token is DAI
   const contractAddr = ref("0x6B175474E89094C44Da98b954EedeAC495271d0F");
 
-  const blockNums = ref<number[]>([]);
-  const totalVolumes = ref<number[]>([]);
-  const baseFees = ref<string[]>([]);
+  const blockNumArr = ref<number[]>([]);
+  const totalVolumeArr = ref<number[]>([]);
+  const baseFeeArr = ref<string[]>([]);
+  const ratioArr = ref<string[]>([]);
 
   async function init() {
-    console.log(123123123123123);
     // Step0. Empty arrays
-    blockNums.value = [];
-    totalVolumes.value = [];
-    baseFees.value = [];
+    blockNumArr.value = [];
+    totalVolumeArr.value = [];
+    baseFeeArr.value = [];
 
     // Step1. Calculate recent 10 blockNums
     const latestBlock = await alchemy.core.getBlockNumber();
     console.log("The latest block number is", latestBlock);
 
     for (let i = 9; i >= 0; i--) {
-      blockNums.value.push(latestBlock - i);
+      blockNumArr.value.push(latestBlock - i);
     }
 
     // Step2. Calculate the volumes in chart1
@@ -33,7 +33,7 @@ export const useMonitorStore = defineStore("monitor", () => {
 
     // alchemy 文档 eth_getLogs api 需要 topic
     // https://docs.alchemy.com/reference/eth-getlogs
-    for (const bn of blockNums.value) {
+    for (const bn of blockNumArr.value) {
       const res = await alchemy.core.getLogs({
         address: contractAddr.value,
         fromBlock: bn,
@@ -45,16 +45,24 @@ export const useMonitorStore = defineStore("monitor", () => {
       res.forEach((item) => {
         sum += parseInt(item.data, 16);
       });
-      totalVolumes.value.push(sum);
+      totalVolumeArr.value.push(sum);
     }
 
-    // Step3. Calculate the BASEFEE in chart2
-    for (const bn of blockNums.value) {
+    // Step3. Calculate the BASEFEE in chart2 and ratio in chart3
+    for (const bn of blockNumArr.value) {
       const res = await alchemy.core.getBlock(bn);
 
-      console.log("res:", res);
+      baseFeeArr.value.push(res.baseFeePerGas!.toString());
 
-      baseFees.value.push(res.baseFeePerGas!.toString());
+      const { gasUsed, gasLimit } = res;
+      console.log(gasUsed);
+      console.log(gasLimit);
+      console.log(BigNumber.from(100));
+      console.log("p: ", gasUsed.div(gasLimit));
+
+      ratioArr.value.push(
+        gasUsed.div(gasLimit).mul(BigNumber.from(100)).toString()
+      );
     }
 
     // Step4. Register subsccription on new block generate
@@ -63,8 +71,8 @@ export const useMonitorStore = defineStore("monitor", () => {
     // Subscribe to new blocks, or newHeads
     alchemy.ws.on("block", async (latestBlockNumber) => {
       console.log("New block generate:", latestBlockNumber);
-      blockNums.value.shift();
-      blockNums.value.push(latestBlockNumber);
+      blockNumArr.value.shift();
+      blockNumArr.value.push(latestBlockNumber);
 
       const res = await alchemy.core.getLogs({
         address: contractAddr.value,
@@ -73,14 +81,21 @@ export const useMonitorStore = defineStore("monitor", () => {
         topics: [ethers.utils.id("Transfer(address,address,uint256)")],
       });
 
-      totalVolumes.value.shift();
+      totalVolumeArr.value.shift();
       let sum = 0;
       res.forEach((item) => {
         sum += parseInt(item.data, 16);
       });
-      totalVolumes.value.push(sum);
+      totalVolumeArr.value.push(sum);
     });
   }
 
-  return { init, contractAddr, blockNums, totalVolumes, baseFees };
+  return {
+    init,
+    contractAddr,
+    blockNumArr,
+    totalVolumeArr,
+    baseFeeArr,
+    ratioArr,
+  };
 });

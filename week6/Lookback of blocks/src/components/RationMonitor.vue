@@ -10,14 +10,13 @@ import { use } from "echarts/core";
 import { storeToRefs } from "pinia";
 import { useMonitorStore } from "@/stores/monitor";
 
-// import ECharts modules manually to reduce bundle size
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart } from "echarts/charts";
 import { GridComponent } from "echarts/components";
 use([CanvasRenderer, LineChart, GridComponent]);
 
 const monitorStore = useMonitorStore();
-const { blockNumArr, baseFeeArr } = storeToRefs(monitorStore);
+const { blockNumArr, ratioArr } = storeToRefs(monitorStore);
 
 const option = ref({
   xAxis: {
@@ -26,13 +25,13 @@ const option = ref({
     data: blockNumArr,
   },
   yAxis: {
-    name: "Base Fee",
+    name: "Ration",
     type: "value",
   },
   animation: false,
   series: [
     {
-      data: baseFeeArr,
+      data: ratioArr,
       type: "line",
       symbolSize: 8,
       label: {
