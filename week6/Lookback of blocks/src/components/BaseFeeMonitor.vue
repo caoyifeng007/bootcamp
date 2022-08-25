@@ -17,7 +17,7 @@ import { GridComponent } from "echarts/components";
 use([CanvasRenderer, LineChart, GridComponent]);
 
 const monitorStore = useMonitorStore();
-const { blockNums, totalVolumes } = storeToRefs(monitorStore);
+const { blockNums, baseFees } = storeToRefs(monitorStore);
 
 const option = ref({
   xAxis: {
@@ -26,14 +26,13 @@ const option = ref({
     data: blockNums,
   },
   yAxis: {
-    name: "Total Transactions Volumes",
+    name: "Base Fee",
     type: "value",
-    minInterval: 1,
   },
   animation: false,
   series: [
     {
-      data: totalVolumes,
+      data: baseFees,
       type: "line",
     },
   ],

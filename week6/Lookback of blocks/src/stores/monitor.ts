@@ -10,14 +10,16 @@ export const useMonitorStore = defineStore("monitor", () => {
 
   const blockNums = ref<number[]>([]);
   const totalVolumes = ref<number[]>([]);
+  const baseFees = ref<string[]>([]);
 
   async function init() {
     console.log(123123123123123);
     // Step0. Empty arrays
     blockNums.value = [];
     totalVolumes.value = [];
+    baseFees.value = [];
 
-    // Step1. Calculate the blockNums
+    // Step1. Calculate recent 10 blockNums
     const latestBlock = await alchemy.core.getBlockNumber();
     console.log("The latest block number is", latestBlock);
 
@@ -31,11 +33,11 @@ export const useMonitorStore = defineStore("monitor", () => {
 
     // alchemy 文档 eth_getLogs api 需要 topic
     // https://docs.alchemy.com/reference/eth-getlogs
-    for (const blockNum of blockNums.value) {
+    for (const bn of blockNums.value) {
       const res = await alchemy.core.getLogs({
         address: contractAddr.value,
-        fromBlock: blockNum,
-        toBlock: blockNum,
+        fromBlock: bn,
+        toBlock: bn,
         topics: [ethers.utils.id("Transfer(address,address,uint256)")],
       });
 
@@ -46,12 +48,21 @@ export const useMonitorStore = defineStore("monitor", () => {
       totalVolumes.value.push(sum);
     }
 
-    // Step3. Register subsccription on new block generate
+    // Step3. Calculate the BASEFEE in chart2
+    for (const bn of blockNums.value) {
+      const res = await alchemy.core.getBlock(bn);
+
+      console.log("res:", res);
+
+      baseFees.value.push(res.baseFeePerGas!.toString());
+    }
+
+    // Step4. Register subsccription on new block generate
     // Alchemy 文档 Emitted when a new block is mined.
     // https://docs.alchemy.com/reference/subscription-api#alchemy-sdks-event-types
     // Subscribe to new blocks, or newHeads
     alchemy.ws.on("block", async (latestBlockNumber) => {
-      console.log("Latest block:", latestBlockNumber);
+      console.log("New block generate:", latestBlockNumber);
       blockNums.value.shift();
       blockNums.value.push(latestBlockNumber);
 
@@ -71,5 +82,5 @@ export const useMonitorStore = defineStore("monitor", () => {
     });
   }
 
-  return { contractAddr, blockNums, totalVolumes, init };
+  return { init, contractAddr, blockNums, totalVolumes, baseFees };
 });
