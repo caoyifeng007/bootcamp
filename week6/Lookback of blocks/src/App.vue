@@ -9,7 +9,7 @@
         </span>
       </div>
 
-      <el-button class="h-20" @click="contractAddr = inputAddr" color="#626aef">
+      <el-button class="h-20" @click="renewSubscription" color="#626aef">
         Subscribe</el-button
       >
     </div>
@@ -18,6 +18,7 @@
   <!-- <el-button @click="getBlockNum">Get Block Number</el-button> -->
 
   <log-monitor />
+
   <base-fee-monitor />
 </template>
 
@@ -27,10 +28,17 @@ import { storeToRefs } from "pinia";
 import { useMonitorStore } from "@/stores/monitor";
 
 import LogMonitor from "@/components/LogMonitor.vue";
-import BaseFeeMonitorVue from "@/components/BaseFeeMonitor.vue";
+import BaseFeeMonitor from "@/components/BaseFeeMonitor.vue";
 
 const monitorStore = useMonitorStore();
 const { contractAddr } = storeToRefs(monitorStore);
 
 const inputAddr = ref("");
+
+monitorStore.init();
+
+function renewSubscription() {
+  contractAddr.value = inputAddr.value;
+  monitorStore.init();
+}
 </script>
