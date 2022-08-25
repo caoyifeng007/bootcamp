@@ -54,14 +54,8 @@ export const useMonitorStore = defineStore("monitor", () => {
 
       baseFeeArr.value.push(res.baseFeePerGas!.toString());
 
-      const { gasUsed, gasLimit } = res;
-      console.log(gasUsed);
-      console.log(gasLimit);
-      console.log(BigNumber.from(100));
-      console.log("p: ", gasUsed.div(gasLimit));
-
       ratioArr.value.push(
-        gasUsed.div(gasLimit).mul(BigNumber.from(100)).toString()
+        ((res.gasUsed.toNumber() / res.gasLimit.toNumber()) * 100).toFixed(2)
       );
     }
 

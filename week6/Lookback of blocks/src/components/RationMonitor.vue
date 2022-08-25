@@ -25,7 +25,7 @@ const option = ref({
     data: blockNumArr,
   },
   yAxis: {
-    name: "Ration",
+    name: "Ratio",
     type: "value",
   },
   animation: false,
