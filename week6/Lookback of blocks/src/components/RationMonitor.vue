@@ -5,9 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { use } from "echarts/core";
-import { storeToRefs } from "pinia";
 import { useMonitorStore } from "@/stores/monitor";
 
 import { CanvasRenderer } from "echarts/renderers";

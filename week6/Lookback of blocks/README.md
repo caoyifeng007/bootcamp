@@ -50,3 +50,6 @@ pnpm test:unit
 ```sh
 pnpm lint
 ```
+
+https://github.com/antfu/unplugin-vue-components/issues/389
+这个Issues下最后的两个链接均可以参考
