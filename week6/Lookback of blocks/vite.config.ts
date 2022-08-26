@@ -14,9 +14,19 @@ export default defineConfig({
     vue(),
     vueJsx(),
     AutoImport({
+      dts: true,
+      imports: ["vue", "vue-router", "pinia"],
       resolvers: [ElementPlusResolver()],
     }),
     Components({
+      dts: true,
+      // https://github.com/antfu/unplugin-vue-components#types-for-global-registered-components
+      types: [
+        {
+          from: "vue-router",
+          names: ["RouterLink", "RouterView"],
+        },
+      ],
       resolvers: [ElementPlusResolver()],
     }),
   ],
