@@ -11,27 +11,27 @@ Reentrancy
   https://solidity-by-example.org/hacks/re-entrancy/
 */
 
-contract EtherStore {
-    mapping(address => uint) balances;
+// contract EtherStore {
+//     mapping(address => uint) balances;
 
-    function deposit() public payable {
-        balances[msg.sender] += msg.value;
-    }
+//     function deposit() public payable {
+//         balances[msg.sender] += msg.value;
+//     }
 
-    function withdraw(uint _amount) public {
-        require(balances[msg.sender] >= _amount);
+//     function withdraw(uint _amount) public {
+//         require(balances[msg.sender] >= _amount);
 
-        // 1. 在call之前调用余额更新
-        balances[msg.sender] -= _amount;
+//         // 1. 在call之前调用余额更新  todo
+//         balances[msg.sender] -= _amount;
 
-        (bool sent, ) = msg.sender.call{value: _amount}("");
-        require(sent, "Failed to send Ether");
-    }
+//         (bool sent, ) = msg.sender.call{value: _amount}("");
+//         require(sent, "Failed to send Ether");
+//     }
 
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
-    }
-}
+//     function getBalance() public view returns (uint) {
+//         return address(this).balance;
+//     }
+// }
 
 contract EtherStore {
     mapping(address => uint) balances;
@@ -49,7 +49,7 @@ contract EtherStore {
         locked = false;
     }
 
-    // 2. 增加一个locked锁和一个noReentrant modifier
+    // 2. 增加一个locked锁和一个noReentrant modifier todo
     function withdraw(uint _amount) public noReentrant {
         require(balances[msg.sender] >= _amount);
 
