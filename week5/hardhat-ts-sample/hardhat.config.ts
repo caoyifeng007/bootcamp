@@ -8,9 +8,9 @@ import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-d
 
 // set proxy
 // 为了解决 hh verify 时的bug
-// import { ProxyAgent, setGlobalDispatcher } from "undici";
-// const proxyAgent = new ProxyAgent("http://127.0.0.1:1080"); // change to yours
-// setGlobalDispatcher(proxyAgent);
+import { ProxyAgent, setGlobalDispatcher } from "undici";
+const proxyAgent = new ProxyAgent("http://127.0.0.1:1080"); // change to yours
+setGlobalDispatcher(proxyAgent);
 
 const config: HardhatUserConfig = {
     solidity: {
@@ -25,7 +25,8 @@ const config: HardhatUserConfig = {
         ],
     },
 
-    defaultNetwork: "rinkeby",
+    // defaultNetwork: "rinkeby",
+    defaultNetwork: "hardhat",
     networks: {
         hardhat: {
             forking: {
@@ -43,9 +44,9 @@ const config: HardhatUserConfig = {
         },
     },
 
-    // etherscan: {
-    //     apiKey: `${process.env.ETHERSCAN_API_KEY}`,
-    // },
+    etherscan: {
+        apiKey: `${process.env.ETHERSCAN_API_KEY}`,
+    },
 };
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
