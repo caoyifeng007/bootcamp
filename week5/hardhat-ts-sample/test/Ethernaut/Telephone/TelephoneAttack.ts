@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Telephone, TelephoneAttacker } from "../../../typechain-types";
 
-describe("CoinFlip", function() {
+describe("Telephone", function() {
     let TelContract: Telephone;
     let TelAttackerContract: TelephoneAttacker;
     let accounts: SignerWithAddress[];
