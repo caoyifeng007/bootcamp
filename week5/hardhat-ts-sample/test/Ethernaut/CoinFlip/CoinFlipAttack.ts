@@ -41,10 +41,28 @@ describe("CoinFlip", function() {
         });
 
         it("flip coin should be win", async function() {
-            const answer = await AttackContract.magicGuess();
+            const flipTx = await AttackContract.magicGuess();
+            // 参考Greater的setGreeting,因为是发送tx了,所以需要wait等待tx上链
+            await flipTx.wait();
             expect(await CoinContract.consecutiveWins()).to.be.equal(
                 BigNumber.from("1"),
             );
+        });
+
+        /* 
+            Q: I see no way to obtain the return value of a non-view function (ethers.js) 
+            A1: The return-value of a non-constant (neither pure nor view) function is available only when the function is called on-chain (i.e., from this contract or from another contract). 
+            所以需要使用callStatic
+            https://ethereum.stackexchange.com/a/88122
+
+            ethersjs: https://docs.ethers.io/v5/single-page/#/v5/api/contract/contract/-%23-contract-callStatic
+
+            Rather than executing the state-change of a transaction, it is possible to ask a node to pretend that a call is not state-changing and return the result.
+            This does not actually change any state, but is free. This in some cases can be used to determine if a transaction will fail or succeed.
+         */
+        it("should be true", async function() {
+            const answer = await AttackContract.callStatic.magicGuess();
+            expect(answer).to.be.true;
         });
     });
 });
