@@ -8,9 +8,9 @@ import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-d
 
 // set proxy
 // 为了解决 hh verify 时的bug
-import { ProxyAgent, setGlobalDispatcher } from "undici";
-const proxyAgent = new ProxyAgent("http://127.0.0.1:1080"); // change to yours
-setGlobalDispatcher(proxyAgent);
+// import { ProxyAgent, setGlobalDispatcher } from "undici";
+// const proxyAgent = new ProxyAgent("http://127.0.0.1:1080"); // change to yours
+// setGlobalDispatcher(proxyAgent);
 
 const config: HardhatUserConfig = {
     solidity: {
@@ -34,6 +34,11 @@ const config: HardhatUserConfig = {
                 // url: `${process.env.INFURA_KEY}`,
                 blockNumber: 15352600,
             },
+            // https://hardhat.org/hardhat-network/docs/overview#logging
+            // This logging is enabled by default when using Hardhat Network's node (i.e. npx hardhat node)
+            // But disabled when using the in-process Hardhat Network provider.
+            // 所以当tx失败，需要查看一下交易详情的时候可以设置为true
+            // loggingEnabled: true,
         },
         rinkeby: {
             url: `${process.env.INFURA_KEY}`,
