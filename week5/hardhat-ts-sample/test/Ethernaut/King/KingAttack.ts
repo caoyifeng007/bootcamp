@@ -73,14 +73,18 @@ describe("King", function() {
             );
         });
 
-        // TODO
-        // 如何用一个账号直接调用合约的callback
-        // it("No one can claim King after attack", async function() {
-        //     await expect(
-        //         await KingContract.connect(accounts[ANOTHERONE_ID]).fallback({
-        //             value: parseEther("50"),
-        //         }),
-        //     ).to.be.revertedWith("You can't claim to be King!");
-        // });
+        it("No one can claim King after attack", async function() {
+            const attTx = await KingAttackContract.attack({
+                value: parseEther("35"),
+            });
+            await attTx.wait();
+
+            await expect(
+                accounts[ANOTHERONE_ID].sendTransaction({
+                    to: KingContract.address,
+                    value: parseEther("50"),
+                }),
+            ).to.be.revertedWith("You can't claim to be King!");
+        });
     });
 });
