@@ -1,22 +1,26 @@
 {
-  "name": "hardhat-js-sample",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
-    "@nomiclabs/hardhat-solhint": "^2.0.1",
-    "hardhat": "^2.10.1",
-    "undici": "^5.8.2"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.1"
-  }
+    "name": "hardhat-js-sample",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "slither": "slither . --solc-remaps '@openzeppelin=node_modules/@openzeppelin @chainlink=node_modules/@chainlink' --exclude naming-convention,external-function,low-level-calls",
+        "toolbox": "docker run -it --rm -v $PWD:/src trailofbits/eth-security-toolbox",
+        "lint": "solhint 'contracts/*.sol'",
+        "lint:fix": "solhint 'contracts/**/*.sol' --fix",
+        "format": "prettier --write ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+        "@nomiclabs/hardhat-solhint": "^2.0.1",
+        "hardhat": "^2.10.1",
+        "undici": "^5.8.2"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.7.3",
+        "dotenv": "^16.0.1"
+    }
 }
