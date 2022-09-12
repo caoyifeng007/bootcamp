@@ -29,7 +29,9 @@ contract GuessTheNewNumberChallenge {
 
 
 
+solution
 
+https://coinsbench.com/capture-the-ether-guess-the-new-number-fa8df008023c
 
 这道题就和之前的一样了，本质就是attack中的block.number和guess中的block.number是同一个number
 
