@@ -53,6 +53,16 @@ solution
 https://coinsbench.com/capture-the-ether-predict-the-future-cb5acf12a8cb
 
 ```solidity
+pragma solidity ^0.8.0;
+
+interface PredictTheFutureChallenge {
+    function isComplete() external view returns (bool) ;
+
+    function lockInGuess(uint8 n) external payable ;
+
+    function settle() external ;
+}
+
 // 0x9c6c2E60295b8BA499C19FA6cDdCeDA5A9E09Db4
 contract Attacker {
     address public owner;
