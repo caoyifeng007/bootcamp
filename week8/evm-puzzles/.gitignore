@@ -1,6 +1,5 @@
 cache/
 node_modules/
-solutions/
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
