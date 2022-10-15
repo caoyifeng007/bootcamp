@@ -56,9 +56,7 @@ contract PredictTheFutureChallenge {
 
 这个puzzle需要调用**lockInGuess**先用输入答案，再调用**settle**来检查之前输入的答案对不对，但是执行**lockInGuess**时会将**settlementBlockNumber**设置为当前block.number + 1，而执行**settle**的时候则需要当前block.number大于**settlementBlockNumber**，这意味着无法在同一个交易中先**lockInGuess**再**settle**，因为同一笔交易中的block.number是一样的
 
-解法如下代码所示，先调用**lockNum**，然后重复不断调用**attack**直到尝试成功
-
-
+解法如下代码所示，先调用**lockNum**，然后重复不断调用**attack**直到尝试成功，不成功会revert，不会将**guesser**置为0，也就不需要重新执行**lockInGuess**，只需要不断尝试**attack**就可以了
 
 ```solidity
 pragma solidity ^0.8.0;
@@ -126,7 +124,7 @@ contract Attacker {
 
 ![](locknum2.png)
 
-接着调用**lockNum**，传入一个[0,10]区间的值并携带1 ether，这里我们传入6，交易成功mining之后，我们可以看到**PredictTheFutureChallenge**合约中有2 ETH的余额
+接着调用**lockNum**，传入一个[0,9]区间的值并携带1 ether，这里我们传入6，交易成功mining之后，我们可以看到**PredictTheFutureChallenge**合约中有2 ETH的余额
 
 ![](warning.png)
 

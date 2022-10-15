@@ -43,5 +43,13 @@ contract PredictTheBlockHashChallenge {
 
 
 
+参考链接：https://cmichel.io/capture-the-ether-solutions/
+
+solidity文档上[blockhash](https://docs.soliditylang.org/en/latest/cheatsheet.html)的定义如下：
+
+blockhash(uint blockNumber) returns (bytes32)`: hash of the given block - only works for **256** most recent blocks
+
+意思是只返回最近的256个区块的哈希值，超过的都会返回0，所以**lockInGuess**中传入32个0，0x0000000000000000000000000000000000000000000000000000000000000000，然后等257个区块之后再调用**settle**就行了
+
 
 
