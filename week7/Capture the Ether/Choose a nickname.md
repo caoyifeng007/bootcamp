@@ -39,3 +39,5 @@ contract NicknameChallenge {
 
 
 这里需要注意的是setNickname方法的参数类型是bytes32，所以我使用了ethersjs中的**utils.formatBytes32String("ElvinsJ")** 把字符串转为bytes32，而且在remix中输入的时候不要带有单引号和双引号
+
+这里有个formatBytes32String和hexZeroPad的比较：https://github.com/ethers-io/ethers.js/discussions/2027

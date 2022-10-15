@@ -48,9 +48,17 @@ contract PredictTheFutureChallenge {
 
 
 
-solution
+参考链接1：https://coinsbench.com/capture-the-ether-predict-the-future-cb5acf12a8cb
 
-https://coinsbench.com/capture-the-ether-predict-the-future-cb5acf12a8cb
+参考链接2：https://cmichel.io/capture-the-ether-solutions/
+
+参考链接3：https://www.anquanke.com/post/id/154104#h3-5
+
+这个puzzle需要调用**lockInGuess**先用输入答案，再调用**settle**来检查之前输入的答案对不对，但是执行**lockInGuess**时会将**settlementBlockNumber**设置为当前block.number + 1，而执行**settle**的时候则需要当前block.number大于**settlementBlockNumber**，这意味着无法在同一个交易中先**lockInGuess**再**settle**，因为同一笔交易中的block.number是一样的
+
+解法如下代码所示，先调用**lockNum**，然后重复不断调用**attack**直到尝试成功
+
+
 
 ```solidity
 pragma solidity ^0.8.0;
