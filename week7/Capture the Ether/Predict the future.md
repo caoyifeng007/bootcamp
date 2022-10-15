@@ -102,5 +102,37 @@ contract Attacker {
 
 
 
+对本puzzle在我自己环境下进行试验，环境为remix连接ganche
 
+```solidity
+		function PredictTheFutureChallenge() public payable {
+        require(msg.value == 1 ether);
+    }
+```
+
+![](predictthefuturedeploy1.png)
+
+![](predictthefuturedeploy2.png)
+
+先部署**PredictTheFutureChallenge**合约，记得在部署的时候携带1 ether，因为其在构造函数中要求了，部署完之后可以看到**PredictTheFutureChallenge**合约中有1 ETH的余额
+
+![](attackerdeploy1.png)
+
+![](attackerdeploy2.png)
+
+再部署**Attacker**合约，在部署的时候传入**PredictTheFutureChallenge**的地址，可以看到victim的值是**PredictTheFutureChallenge**的地址
+
+![](locknum1.png)
+
+![](locknum2.png)
+
+接着调用**lockNum**，传入一个[0,10]区间的值并携带1 ether，这里我们传入6，交易成功mining之后，我们可以看到**PredictTheFutureChallenge**合约中有2 ETH的余额
+
+![](warning.png)
+
+最后不断调用**attack**并携带1 ether，这时会弹出一个警告，不要理它，点击Send Transaction
+
+![](attack.png)
+
+如果计算出的数字不是6就会revert，在log输出区可以看到日志信息：revert Wrong answer，在若干次revert之后终于成功mining，此时可以看到**PredictTheFutureChallenge**合约中的余额变为0，而Attacker的余额变为3 ETH了。
 
