@@ -97,6 +97,13 @@ contract TokenBankChallenge {
     function isComplete() public view returns (bool) {
         return token.balanceOf(this) == 0;
     }
+    
+    // 这是我自己添加的方法
+    function balanceOfThis() public view returns (uint256) {
+    		// 1000000 * 10 ** 18
+    		// 也就是说当前合约的总token数是这么多
+        return token.balanceOf(this);
+    }
 
     function tokenFallback(address from, uint256 value, bytes) public {
         require(msg.sender == address(token));
@@ -113,3 +120,11 @@ contract TokenBankChallenge {
     }
 }
 ```
+
+
+
+
+
+第一个地址作为msg.sender， 0x9A30dD98a7359d60B8f35971C859ee81E9717F54
+
+第二个地址作为player   0x7FA7fB4D35f0F4F3959A65098D1D9Cf69E49Ac48
