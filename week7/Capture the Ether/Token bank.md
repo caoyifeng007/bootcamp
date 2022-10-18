@@ -123,7 +123,11 @@ contract TokenBankChallenge {
 
 
 
+参考链接1：https://cmichel.io/capture-the-ether-solutions/
 
+参考链接2：https://godorz.info/2021/08/capture-the-ether/
+
+参考链接3：https://www.anquanke.com/post/id/154104#h3-9
 
 第一个地址作为msg.sender， 0x9A30dD98a7359d60B8f35971C859ee81E9717F54
 
