@@ -215,9 +215,14 @@ contract TokenBankChallenge {
 	function withdraw(uint256 amount) public {
         require(balanceOf[msg.sender] >= amount);
 
-        require(token.transfer(msg.sender, amount));
-        balanceOf[msg.sender] -= amount;
+        require(token.transfer(msg.sender, amount)); // line1
+        balanceOf[msg.sender] -= amount;  // line2
     }
+```
+
+因为在withdraw内，在require中去执行transfer并且是先transfer再执行减少操作，所以这里如果**to**是一个恶意的合约，在**to**这个地址上的**tokenFallback**中再去调用withdraw，那么就变成了无限循环的重入攻击了
+
+```solidity
 ```
 
 
