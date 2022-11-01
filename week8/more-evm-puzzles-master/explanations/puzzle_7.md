@@ -36,7 +36,7 @@
 
 
 
-
+参考链接：https://ventral.digital/posts/2022/6/6/more-evm-puzzles-part-3
 
 ```assembly
 00      5A        GAS           2gas  │
