@@ -16,13 +16,15 @@ describe(NAME, function () {
         const VictimFactory = await ethers.getContractFactory(NAME);
         const victimContract = await VictimFactory.deploy({ value });
 
-        return { victimContract, attackerWallet };
+        return { victimContract, attackerWallet, owner };
     }
 
     describe("exploit", async function () {
         let victimContract, attackerWallet;
         before(async function () {
-            ({ victimContract, attackerWallet } = await loadFixture(setup));
+            ({ victimContract, attackerWallet, owner } = await loadFixture(
+                setup,
+            ));
         });
 
         it("conduct your attack here", async function () {
@@ -31,10 +33,15 @@ describe(NAME, function () {
             );
             const attackerContract = await AttackerFactory.connect(
                 attackerWallet,
-            ).deploy(victimContract.address, {
-                value: ethers.utils.parseEther("1000"),
-            });
+            ).deploy(victimContract.address);
             await attackerContract.deployTransaction.wait();
+
+            const mintTx = await victimContract
+                .connect(owner)
+                .mint(attackerContract.address, 10, {
+                    value: ethers.utils.parseEther("1000"),
+                });
+            await mintTx.wait();
 
             await attackerContract.attack();
         });

