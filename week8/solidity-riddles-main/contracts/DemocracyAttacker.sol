@@ -18,10 +18,11 @@ contract DemocracyAttacker {
     }
 
     fallback() external payable {
-        console.log("fallback....");
+        // console.log("fallback....");
 
-        DemocracyAttacker attacker2 = new DemocracyAttacker(victim);
+        // DemocracyAttacker ak = new DemocracyAttacker(victim);
+        // Democracy(victim).transferFrom  
 
-        Democracy(victim).vote(address(0));
+        // Democracy(victim).vote(address(0));
     }
 }
