@@ -16,6 +16,7 @@
     "devDependencies": {
         "@nomicfoundation/hardhat-toolbox": "^1.0.2",
         "@nomiclabs/hardhat-solhint": "^2.0.1",
+        "@tovarishfin/hardhat-yul": "^3.0.5",
         "hardhat": "^2.10.1",
         "undici": "^5.8.2"
     },
