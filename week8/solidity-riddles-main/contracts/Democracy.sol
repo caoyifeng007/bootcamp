@@ -5,6 +5,8 @@ pragma solidity 0.8.15;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+import "hardhat/console.sol";
+
 /**
  * Democracy NFT: One hodler, one vote!
  *
@@ -55,6 +57,7 @@ contract Democracy is Ownable, ERC721 {
     }
 
     modifier hodlerNotYetVoted() {
+        console.log(voted[msg.sender]);
         require(!voted[msg.sender], "DemocracyNft: One hodler, one vote");
         _;
     }
@@ -97,7 +100,10 @@ contract Democracy is Ownable, ERC721 {
         votes[nominee] += hodlerNftBalance;
         voted[msg.sender] = true;
 
+        console.log("before call....");
         // Tip hodler for doing their civic duty
+        // 1. 10 ETH 1
+        // 2. 9  ETH 0.9
         payable(msg.sender).call{value: address(this).balance / 10}("");
 
         // Once all hodlers have voted, call election
