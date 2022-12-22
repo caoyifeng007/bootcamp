@@ -1,33 +1,39 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { ethers } from "hardhat";
-import { MyYulIERC1155 } from "../typechain-types";
+import { ethers, artifacts } from "hardhat";
 import { JsonRpcProvider, BaseProvider } from "@ethersproject/providers";
 
-const { utils } = ethers;
+import { Contract } from "ethers";
+const { utils, BigNumber } = ethers;
 
-describe("BalanceTest", function() {
-    let a: MyYulIERC1155;
+import { Artifact } from "hardhat/types";
+
+describe("YulERC1155Test", function() {
+    let contract: Contract;
     let accounts: SignerWithAddress[];
-    let provider: JsonRpcProvider;
 
-    const DEPLOYER_ID = 3;
-    const NEW_ADMIN = 4;
+    let yulArtifact: Artifact;
+    let iYulArtifact: Artifact;
 
     beforeEach(async function() {
-        const YulFactory = await ethers.getContractFactory("MyYulIERC1155");
+        yulArtifact = await artifacts.readArtifact("YulERC1155");
+        iYulArtifact = await artifacts.readArtifact("IYulERC1155");
+
+        const YulFactory = await ethers.getContractFactory(
+            iYulArtifact.abi,
+            yulArtifact.bytecode,
+        );
 
         accounts = await ethers.getSigners();
-        let yulContract = await YulFactory
-        // await yulcon.deployTransaction.wait();
+        contract = await YulFactory.deploy();
+        await contract.deployTransaction.wait();
     });
 
-    describe("balance", async function() {
-        it("before: balance of b contract should have 1 ether", async function() {
-            const balance = await provider.getBalance(b.address);
-            expect(balance).to.be.equal(
-                ethers.BigNumber.from(utils.parseEther("1")),
-            );
+    describe("hello test", async function() {
+        it("should return 0x123", async function() {
+            const x = await contract.functions.noname();
+            // console.log(x);
+            expect(x[0]).to.be.equal(BigNumber.from(0x123));
         });
     });
 });
