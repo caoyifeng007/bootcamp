@@ -1,36 +1,34 @@
 import { expect } from "chai";
 import { ethers, artifacts } from "hardhat";
-import { JsonRpcProvider, BaseProvider } from "@ethersproject/providers";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 import { Contract, Signer, utils, BigNumber } from "ethers";
 
-import { Artifact } from "hardhat/types";
-
 describe("YulERC1155Test", function() {
-    let contract: Contract;
-    let accounts: Signer[];
-
-    let yulArtifact: Artifact;
-    let iYulArtifact: Artifact;
-
-    beforeEach(async function() {
-        yulArtifact = await artifacts.readArtifact("YulERC1155");
-        iYulArtifact = await artifacts.readArtifact("IYulERC1155");
+    const setup = async () => {
+        const yulArtifact = await artifacts.readArtifact("YulERC1155");
+        const iYulArtifact = await artifacts.readArtifact("IYulERC1155");
 
         const YulFactory = await ethers.getContractFactory(
             iYulArtifact.abi,
             yulArtifact.bytecode,
         );
 
-        accounts = await ethers.getSigners();
-        contract = await YulFactory.deploy();
-        await contract.deployTransaction.wait();
-    });
+        const accounts = await ethers.getSigners();
+        const contract = await YulFactory.deploy();
+        // console.log("setup running");
+        // await contract.deployed();
+        return { accounts, contract };
+    };
 
     describe("hello test", async function() {
+        let accounts: Signer[], contract: Contract;
+        beforeEach(async function() {
+            ({ accounts, contract } = await loadFixture(setup));
+        });
+
         it("should return 0x123", async function() {
             const x = await contract.functions.noname();
-            // console.log(x);
             expect(x[0]).to.be.equal(BigNumber.from(0x123));
         });
     });
