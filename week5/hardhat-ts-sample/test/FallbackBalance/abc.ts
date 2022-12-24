@@ -2,7 +2,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Acontract, Bcontract, Ccontract } from "../../typechain-types";
-import { JsonRpcProvider, BaseProvider } from "@ethersproject/providers";
 
 const { utils } = ethers;
 
@@ -11,7 +10,7 @@ describe("BalanceTest", function() {
     let b: Bcontract;
     let c: Ccontract;
     let accounts: SignerWithAddress[];
-    let provider: JsonRpcProvider;
+    // let provider: ethers.providers.JsonRpcProvider;
 
     const DEPLOYER_ID = 3;
     const ATTACKER_ID = 5;
@@ -32,16 +31,18 @@ describe("BalanceTest", function() {
         b = await BFactory.deploy(c.address);
         await b.deployTransaction.wait();
 
-        provider = await ethers.provider;
         const oneEtherInHex = utils.hexStripZeros(
             utils.parseEther("1").toHexString(),
         );
-        await provider.send("hardhat_setBalance", [b.address, oneEtherInHex]);
+        await ethers.provider.send("hardhat_setBalance", [
+            b.address,
+            oneEtherInHex,
+        ]);
     });
 
     describe("balance", async function() {
         it("before: balance of b contract should have 1 ether", async function() {
-            const balance = await provider.getBalance(b.address);
+            const balance = await ethers.provider.getBalance(b.address);
             expect(balance).to.be.equal(
                 ethers.BigNumber.from(utils.parseEther("1")),
             );
@@ -51,7 +52,7 @@ describe("BalanceTest", function() {
             const tx = await a.t(b.address, { value: utils.parseEther("1") });
             await tx.wait();
 
-            const balance = await provider.getBalance(b.address);
+            const balance = await ethers.provider.getBalance(b.address);
             expect(balance).to.be.equal(
                 ethers.BigNumber.from(utils.parseEther("2")),
             );
@@ -61,7 +62,7 @@ describe("BalanceTest", function() {
             const tx = await a.t(b.address, { value: utils.parseEther("1") });
             await tx.wait();
 
-            const balance = await provider.getBalance(c.address);
+            const balance = await ethers.provider.getBalance(c.address);
             expect(balance).to.be.equal(
                 ethers.BigNumber.from(utils.parseEther("0")),
             );

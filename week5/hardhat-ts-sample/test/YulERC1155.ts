@@ -1,16 +1,14 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { ethers, artifacts } from "hardhat";
 import { JsonRpcProvider, BaseProvider } from "@ethersproject/providers";
 
-import { Contract } from "ethers";
-const { utils, BigNumber } = ethers;
+import { Contract, Signer, utils, BigNumber } from "ethers";
 
 import { Artifact } from "hardhat/types";
 
 describe("YulERC1155Test", function() {
     let contract: Contract;
-    let accounts: SignerWithAddress[];
+    let accounts: Signer[];
 
     let yulArtifact: Artifact;
     let iYulArtifact: Artifact;
