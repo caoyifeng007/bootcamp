@@ -1,0 +1,39 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0xD78469e2D7CEBB393cf86Ab0d2F2138eeaB99807",
+    "txHash": "0x5770a32065a0ddb232285eb004312c7b664ea2d8381467de37ab734f7c740dd1"
+  },
+  "proxies": [
+    {
+      "address": "0xFA7A518D42123871E8eB96C905381293328c9797",
+      "txHash": "0x74041355cf8ceaab5c2f41574d1e878a715569cd38440694931aaa71bac8f44c",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "58a4a4ce6c4d6038902284dfb469539d258f652565aa4fe4905418d82a2958e4": {
+      "address": "0x24BF58Ed2Da27143Ef9b5BF363fA0A18bCa3FEc8",
+      "txHash": "0x7eeec0069d320bd57ef2716e9d56c3e970ee94f0dcdbc09111570671d1153daf",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "label": "val",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256",
+            "contract": "Box",
+            "src": "contracts/SimpleUpgradeable/Box.sol:13"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    }
+  }
+}
