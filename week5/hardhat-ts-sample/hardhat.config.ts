@@ -30,14 +30,14 @@ const config: HardhatUserConfig = {
         ],
     },
 
-    defaultNetwork: "gorli",
-    // defaultNetwork: "hardhat",
+    // defaultNetwork: "gorli",
+    defaultNetwork: "hardhat",
     networks: {
         hardhat: {
             forking: {
                 url: `${process.env.ALCHEMY_KEY}`,
                 // url: `${process.env.INFURA_KEY}`,
-                blockNumber: 15352600,
+                blockNumber: 8333100,
             },
             // https://hardhat.org/hardhat-network/docs/overview#logging
             // This logging is enabled by default when using Hardhat Network's node (i.e. npx hardhat node)
