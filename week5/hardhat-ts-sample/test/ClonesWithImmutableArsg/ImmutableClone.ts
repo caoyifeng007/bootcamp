@@ -38,6 +38,8 @@ describe("ClonesWithImmutableArgs use case Test", function() {
         });
 
         it("should ", async function() {
+            // 如何获得tx的返回值,可以参考
+            // https://stackoverflow.com/q/72356857/12606766
             const cloneTx = await cloneFactory.createClone(ADDRESS, 1, 2, 3);
             const cloneReceipt = await cloneTx.wait();
             const cloneEvent = cloneReceipt.events![0];
