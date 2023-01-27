@@ -40,10 +40,13 @@ describe("ClonesWithImmutableArgs use case Test", function() {
         it("should ", async function() {
             // 如何获得tx的返回值,可以参考
             // https://stackoverflow.com/q/72356857/12606766
+            // https://ethereum.stackexchange.com/a/119858
             const cloneTx = await cloneFactory.createClone(ADDRESS, 1, 2, 3);
             const cloneReceipt = await cloneTx.wait();
-            const cloneEvent = cloneReceipt.events![0];
-            const { addr } = cloneEvent.args!;
+            const cloneEvent = cloneReceipt.events?.find(
+                (e) => e.event == "ContractCloned",
+            );
+            const { addr } = cloneEvent!.args!;
 
             const clone1 = new ethers.Contract(
                 addr,
