@@ -16,4 +16,7 @@ contract Attacker {
     function attack() public {
         victim.call(abi.encodeWithSignature("pwn()"));
     }
+
+    // 一个问题: 正常来说执行了attack之后,Delegation中的owner会被修改成我们Attacker合约的地址
+    // 但是在Ethernaut中却不算完成puzzle,应该owner需要是钱包中account的地址
 }
