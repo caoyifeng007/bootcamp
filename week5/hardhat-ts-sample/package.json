@@ -19,11 +19,13 @@
         "@openzeppelin/hardhat-upgrades": "^1.22.0",
         "@tovarishfin/hardhat-yul": "^3.0.5",
         "hardhat": "^2.10.1",
+        "hardhat-gas-reporter": "^1.0.9",
         "undici": "^5.8.2"
     },
     "dependencies": {
         "@openzeppelin/contracts": "^4.7.3",
         "@openzeppelin/contracts-upgradeable": "^4.8.0",
+        "@solvprotocol/erc-3525": "^1.1.0",
         "dotenv": "^16.0.1"
     }
 }

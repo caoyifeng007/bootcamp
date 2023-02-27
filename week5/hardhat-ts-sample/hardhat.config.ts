@@ -5,6 +5,8 @@ import { task } from "hardhat/config";
 import "@nomiclabs/hardhat-solhint";
 import "@openzeppelin/hardhat-upgrades";
 
+import "hardhat-gas-reporter";
+
 // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // 最开始文档上是这个写法,现在不知道为什么改了,可以看这个issue: https://github.com/motdotla/dotenv/issues/704
 import "dotenv/config";
@@ -29,6 +31,10 @@ const config: HardhatUserConfig = {
             },
         ],
     },
+    // 默认直接使用不需要下边的设置: REPORT_GAS=true npx hardhat test
+    // gasReporter: {
+    //     enabled: process.env.REPORT_GAS ? true : false,
+    // },
 
     // defaultNetwork: "gorli",
     defaultNetwork: "hardhat",
